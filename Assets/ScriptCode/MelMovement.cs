@@ -10,6 +10,7 @@ public class MelMovement : MonoBehaviour {
     private float movement = 0;
     private Rigidbody2D rigidBody;
     public float maxSpeed = 20;
+	public Text finalScore;
 
 
 	// Use this for initialization
@@ -36,12 +37,28 @@ public class MelMovement : MonoBehaviour {
         
 	}
 
+	void OnBecameInvisible() {
+		Death ();
+	}
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "FloorObject")
-        {
-            gameObject.SetActive(false);
-        }
+		if (col.gameObject.name == "EnemyJackson(Clone)") {
+			Death ();
+		}
     }
+
+	void Death()
+	{
+		AudioSource endgame = GetComponent<AudioSource> ();
+		GetComponent<Renderer> ().enabled = false;
+		GameState.EndGame ();
+		endgame.Play ();
+		finalScore.text = "Game Over! Your score is " + GameState.userScore;
+		Invoke ("Kill", 6);
+	}
+
+	void Kill() {
+		Application.Quit ();
+	}
 }

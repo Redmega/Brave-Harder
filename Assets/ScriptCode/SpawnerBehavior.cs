@@ -10,15 +10,20 @@ public class SpawnerBehavior : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		spawnPosition = new Vector2 (GetNewLocation(), 8);
-		NewSpawn ();
+		spawnPosition = new Vector2 (GetNewLocation(), 12);
+		Invoke ("NewSpawn", 1);
 	}
 
 	void NewSpawn () {
+
+		if(GameState.gameOver) {
+			return;
+		}
+
 		// Instantiate the Enemy
 		Instantiate (EnemyPepe, spawnPosition, Quaternion.identity);
 		//Change the spawn location
-		spawnPosition = new Vector2(GetNewLocation(), 8);
+		spawnPosition = new Vector2(GetNewLocation(), 12);
 		//Invoke the function again after a random amount of time
 
 		float highRange = 10 * GetDifficultyMultiplier ();
@@ -28,10 +33,10 @@ public class SpawnerBehavior : MonoBehaviour {
 		
 
 	float GetNewLocation() {
-		float newLocation = Random.Range (-8, 8);
+		float newLocation = Random.Range (-12, 10);
 
 		while (Mathf.Abs (newLocation - spawnPosition.x) <= 2) {
-			newLocation = Random.Range (-8, 8);
+			newLocation = Random.Range (-12, 10);
 		}
 		return newLocation;
 	}
